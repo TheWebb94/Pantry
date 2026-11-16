@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace RecipeGen.Core
 {
-    //Plain data classes that match the ingredient JSON
     
     [Serializable]
     public class IngredientDataFile

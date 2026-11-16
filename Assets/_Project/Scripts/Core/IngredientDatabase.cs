@@ -26,7 +26,7 @@ namespace RecipeGen.Core
                 throw new ArgumentNullException(nameof(items));
             }
 
-            ingredients = items.ToList(); //stores ingreedients from JSON to this item list
+            ingredients = items.ToList(); //copies the given ingredients into database
             
             this.compoundNames = compoundNames != null
                 ? new Dictionary<int, string>(compoundNames)
@@ -58,6 +58,8 @@ namespace RecipeGen.Core
         public static IngredientDatabase FromJson(string json)
         {
             var file = JsonUtility.FromJson<IngredientDataFile>(json);
+            if (file?.ingredients == null || file.ingredients.Length == 0)
+                throw new FormatException("Ingredient JSON contains no ingredients.");
            
             var items = file.ingredients.Select(r => new Ingredient(r.id, r.key, r.name, r.category, r.compoundIds));
             var names = (file.compounds ?? Array.Empty<CompoundRecord>()).ToDictionary(c => c.id, c => c.name); //converts compunds into dictionary with cID as keys and compounds as values
@@ -65,13 +67,17 @@ namespace RecipeGen.Core
         }
 
         // Returns the index pof the ingredient given
-        public int IndexOf(Ingredient ingredient) => indexById.GetValueOrDefault(ingredient.ID);
+        public int IndexOf(Ingredient ingredient)
+        {
+            if (indexById.TryGetValue(ingredient.ID, out int index)) return index;
+            throw new KeyNotFoundException($"'{ingredient.Key}' is not in the ingredient database.");
+        }
 
         //Return the ingredient with the given iD
         public Ingredient GetById(int id) => ingredients[indexById[id]];
 
         //return the ingrdeient by key
-        public Ingredient GetByKey(string key) => byKey[key];
+        public bool TryGetByKey(string key, out Ingredient ingredient) => byKey.TryGetValue(key, out ingredient);
 
         //returns a list of all ingredients in the given category
         public IEnumerable<Ingredient> InCategory(string category) => ingredients.Where(i => i.Category == category);
