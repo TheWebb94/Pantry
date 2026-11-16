@@ -6,10 +6,10 @@ namespace RecipeGen.Core
     
     public class Ingredient
     {
-        public int ID;
-        public string Key;
-        public string Name;
-        public string Category;
+        public int ID { get;}
+        public string Key { get;}
+        public string Name { get; }
+        public string Category { get; }
         public IReadOnlyCollection<int> Compounds => compounds; 
 
         private readonly HashSet<int> compounds; //hashset used for compoound data storage for efficient lookups - O(1)
@@ -25,7 +25,7 @@ namespace RecipeGen.Core
             compounds = new HashSet<int>(compoundIds);
         }
         
-        public bool hasCompound(int compoundId)
+        public bool HasCompound(int compoundId)
         {
             return compounds.Contains(compoundId);
         }
