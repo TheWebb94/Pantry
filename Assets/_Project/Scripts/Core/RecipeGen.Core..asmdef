@@ -1,6 +1,6 @@
 {
     "name": "RecipeGen.Core.",
-    "rootNamespace": "",
+    "rootNamespace": "RecipeGen.Core",
     "references": [
         ""
     ],
