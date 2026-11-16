@@ -33,13 +33,15 @@ namespace RecipeGen.Core
         public static float Jaccard(Ingredient a, Ingredient b)
         {
         /*
-             * TODO: create test on Jaccard - assert Jaccard(i1, i2) = 1 when
-             * ingredient1 w compounds (0, 1, 2, 3, 4)
-             * ingredient2 w compounds (0, 1, 2, 3, 4)
-             *
-             * TODO: assert zero overlap set  Jaccard(i1, i2) = 0 when
-             * ingredient1 w compounds (1, 3 ,5 ,7, 9)
-             * ingredient2 w compounds (0, 2, 4, 6, 8)
+         * TODO: create test on Jaccard - assert Jaccard(i1, i2) = 1 when
+         * ingredient1 w compounds (0, 1, 2, 3, 4)
+         * ingredient2 w compounds (0, 1, 2, 3, 4)
+         *
+         * TODO: assert zero overlap set  Jaccard(i1, i2) = 0 when
+         * ingredient1 w compounds (1, 3 ,5 ,7, 9)
+         * ingredient2 w compounds (0, 2, 4, 6, 8)
+         *
+         * TODO: write full testing framework for pair scorer class
         */ 
             
             int shared = CountShared(a, b); //overlap of compounds of both ingredients  ex (onion 58, garlic 21) shared = 16
@@ -49,11 +51,9 @@ namespace RecipeGen.Core
             if (union == 0)
             {
                 return 0f;
-            }
-            else
-            {
-                return (float)shared / union;                           // shared/union ex 16 / 63 = 0.253... = Jaccard similarity score
-            }
+            } 
+            return (float)shared / union;                           // shared/union ex 16 / 63 = 0.253... = Jaccard similarity score
+            
         }
 
         public static int CountShared(Ingredient a, Ingredient b)

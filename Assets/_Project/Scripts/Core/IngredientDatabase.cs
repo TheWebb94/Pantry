@@ -58,6 +58,7 @@ namespace RecipeGen.Core
         public static IngredientDatabase FromJson(string json)
         {
             var file = JsonUtility.FromJson<IngredientDataFile>(json);
+            
             if (file?.ingredients == null || file.ingredients.Length == 0)
                 throw new FormatException("Ingredient JSON contains no ingredients.");
            
