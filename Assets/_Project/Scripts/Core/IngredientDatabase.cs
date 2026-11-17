@@ -62,8 +62,10 @@ namespace RecipeGen.Core
             if (file?.ingredients == null || file.ingredients.Length == 0)
                 throw new FormatException("Ingredient JSON contains no ingredients.");
            
+            //extract id, key, name, category, compounds from json
             var items = file.ingredients.Select(r => new Ingredient(r.id, r.key, r.name, r.category, r.compoundIds));
-            var names = (file.compounds ?? Array.Empty<CompoundRecord>()).ToDictionary(c => c.id, c => c.name); //converts compunds into dictionary with cID as keys and compounds as values
+            //converts compunds into dictionary with cID as keys and compounds as values
+            var names = (file.compounds ?? Array.Empty<CompoundRecord>()).ToDictionary(c => c.id, c => c.name); 
             return new IngredientDatabase(items, names);
         }
 
@@ -83,8 +85,8 @@ namespace RecipeGen.Core
         //returns a list of all ingredients in the given category
         public IEnumerable<Ingredient> InCategory(string category) => ingredients.Where(i => i.Category == category);
 
-        //returns the name of the compund at given index - with section 5.4.3 of research in mind  (giving scoring information to user)
+        //returns the name of the compound at given index - with section 5.4.3 of research in mind  (giving scoring information to user)
         public string CompoundName(int compoundId) =>
-            compoundNames.TryGetValue(compoundId, out var name) ? name : $"compound #{compoundId}";
+            compoundNames.TryGetValue(compoundId, out var name) ? name : $"compound #{compoundId}"; //if no name is found, return the id as its name instead
     }
 }
